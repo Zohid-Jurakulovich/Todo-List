@@ -25,6 +25,13 @@ body{
   
 }
 
+.title{
+  margin-bottom: 10px;
+  text-align: center;
+  color: #fff;
+
+}
+
 .form{
   padding: 30px 20px;
   background-color: #fff;
