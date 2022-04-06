@@ -4,10 +4,14 @@ const elList = document.querySelector(".todo-list")
 const elResultAll = document.querySelector(".results__all")
 const elResultCompleted = document.querySelector(".results__completed")
 const elResultUncompleted = document.querySelector(".results__uncompleted")
+const elResults = document.querySelector(".results")
 
 // console.log(elResultAll, elResultCompleted, elResultUncompleted);
 
-const todos = [];
+const localTodos = JSON.parse(window.localStorage.getItem("list"));
+const todos = localTodos || [];
+
+renderTodos(todos, elList);
 
 elList.addEventListener("click", evt => {
   if(evt.target.matches(".todo-list__btn")){
@@ -18,6 +22,7 @@ elList.addEventListener("click", evt => {
     
     todos.splice(findIndexArr, 1);
     renderTodos(todos, elList);
+    window.localStorage.setItem("list", JSON.stringify(todos))
   }else if (evt.target.matches(".todo-list__checkbox")) {
     const inputCheckedId = evt.target.dataset.todoId;
     
@@ -26,6 +31,7 @@ elList.addEventListener("click", evt => {
     findElement.isCompleted = !findElement.isCompleted;
     
     renderTodos(todos, elList);
+    window.localStorage.setItem("list", JSON.stringify(todos))
   }
 })
 
@@ -36,16 +42,26 @@ elList.addEventListener("click", evt => {
 function renderTodos(arr, element) {
   
   element.innerHTML = "";
-
-  elResultAll.textContent = arr.length;
-  elResultCompleted.textContent = 0;
-  elResultUncompleted.textContent = arr.length;
+  
+  const elAllResult = todos.length;
+  
+  console.log(elAllResult);
+  
+  elResultAll.textContent = elAllResult;
+  
+  const elCompleteResult = todos.filter(e => e.isCompleted === true).length;
+  
+  elResultCompleted.textContent = elCompleteResult;
+  
+  elResultUncompleted.textContent = elAllResult - elCompleteResult;
   
   arr.forEach(todo =>{
     
+    const newContainer = document.createElement("div");
     const newItem = document.createElement("li");
     const newInput = document.createElement("input");
     const newBtn = document.createElement("button");
+    // const newBookmarkBtn = document.createElement("button");
     
     
     
@@ -53,10 +69,12 @@ function renderTodos(arr, element) {
     
     newItem.textContent = todo.title;
     newItem.classList.add("todo-list__item");
+    newContainer.classList.add("todo-list__element");
     newInput.type = "checkbox";
     newBtn.textContent = "Delete";
     newBtn.classList.add("todo-list__btn");
     newBtn.dataset.todoId = todo.id;
+    // newBookmarkBtn.classList.add("todo-list__bookmark");
     newInput.dataset.todoId = todo.id;
     newInput.classList.add("todo-list__checkbox");
     
@@ -64,13 +82,14 @@ function renderTodos(arr, element) {
     if (todo.isCompleted) {
       newInput.checked = true;
       newItem.style.textDecoration = "line-through";
-      elResultCompleted.textContent++;
-      elResultUncompleted.textContent--;
+      // elResultCompleted.textContent++;
+      // elResultUncompleted.textContent--;
     }
     
-    
-    newItem.appendChild(newInput);
-    newItem.appendChild(newBtn);
+    newContainer.appendChild(newInput);
+    newContainer.appendChild(newBtn);
+    // newContainer.appendChild(newBookmarkBtn);
+    newItem.appendChild(newContainer);
     
     element.appendChild(newItem);
   })
@@ -88,6 +107,7 @@ elForm.addEventListener("submit", evt =>{
   if (elInputValue == ""|| Number(elInputValue)){
     alert("Please enter a task!");
     newItem.textContent = "";
+    // elFormInput.value = "";
   }
   
   const todo = {
@@ -97,9 +117,26 @@ elForm.addEventListener("submit", evt =>{
   }
   todos.push(todo);
   
-  renderTodos(todos , elList)
+  renderTodos(todos , elList);
   
-  // console.log(todos);
+  window.localStorage.setItem("list", JSON.stringify(todos));
+  
+  
   elFormInput.value = "";
   
+})
+
+
+elResults.addEventListener("click", n => {
+  if(n.target.matches(".results-all")){
+    
+    renderTodos(todos, elList)
+    
+  } if (n.target.matches(".results-completed")) {
+    const completeFiltered = todos.filter(e => e.isCompleted === true)
+    renderTodos(completeFiltered, elList)
+  }if (n.target.matches(".results-uncompleted")) {
+    const uncompleteFiltered = todos.filter(e => e.isCompleted === false)
+    renderTodos(uncompleteFiltered, elList)
+  }
 })

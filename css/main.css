@@ -49,7 +49,7 @@ body{
   color: #111;
   font-weight: 500;
   position: relative;
-  border-radius: 5px1;
+  border-radius: 5px;
   /* outline: none; */
 }
 
@@ -82,6 +82,7 @@ body{
 .todo-list__item{
   display: flex;
   align-items: center;
+  justify-content: space-between;
   font-size: 16px;
   background-color: #fff;
   padding: 20px 20px;
@@ -91,11 +92,26 @@ body{
   width: 100%;
   position: relative;
 }
+.todo-list__element{
+  /* display: flex; */
+  /* align-items: center; */
+  /* margin-left: 0 auto; */
+}
 
 .todo-list__btn{
   padding: 10px ;
   border-radius: 5px;
   border-color: #8052ec;
+}
+
+.todo-list__bookmark{
+  margin-left: 10px;
+  padding: 18px;
+  border: none;
+  border-radius: 5px;
+  background-image: url(../images/bookmark.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 
@@ -115,5 +131,40 @@ body{
   background-color: #d1d3d4;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   position: relative;
+}
+
+.results-all{
+  padding: 10px 25px;
+  border-radius: 10px;
+  border-color: #fff;
+  
+}
+.results-all:focus{
+  border-color: #8052ec;
+}
+
+.results-completed{
+  padding: 10px 25px;
+  border-radius: 10px;
+  border-color: #fff;
+  
+}
+
+.results-completed:focus{
+  border-color: #8052ec;
+
+}
+
+.results-uncompleted{
+  padding: 10px 25px;
+  /* border: none; */
+  border-radius: 10px;
+  
+  border-color: #fff;
+}
+
+.results-uncompleted{
+  border-color: #8052ec;
+
 }
 
